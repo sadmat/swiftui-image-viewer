@@ -9,7 +9,7 @@ public struct ImageViewerRemote: View {
     @Binding var imageURL: String
     @State var httpHeaders: [String: String]?
     @State var disableCache: Bool?
-    @State var caption: Text?
+    private var caption: String?
     @State var closeButtonTopRight: Bool?
     
     var aspectRatio: Binding<CGFloat>?
@@ -19,12 +19,12 @@ public struct ImageViewerRemote: View {
     
     @ObservedObject var loader: ImageLoader
     
-    public init(imageURL: Binding<String>, viewerShown: Binding<Bool>, aspectRatio: Binding<CGFloat>? = nil, disableCache: Bool? = nil, caption: Text? = nil, closeButtonTopRight: Bool? = false) {
+    public init(imageURL: Binding<String>, viewerShown: Binding<Bool>, aspectRatio: Binding<CGFloat>? = nil, disableCache: Bool? = nil, caption: String? = nil, closeButtonTopRight: Bool? = false) {
         _imageURL = imageURL
         _viewerShown = viewerShown
         _disableCache = State(initialValue: disableCache)
         self.aspectRatio = aspectRatio
-        _caption = State(initialValue: caption)
+        self.caption = caption
         _closeButtonTopRight = State(initialValue: closeButtonTopRight)
         
         loader = ImageLoader(url: imageURL)
@@ -131,7 +131,7 @@ public struct ImageViewerRemote: View {
                                         HStack {
                                             Spacer()
                                             
-                                            self.caption
+                                            Text(self.caption!)
                                                 .foregroundColor(.white)
                                                 .multilineTextAlignment(.center)
                                             
